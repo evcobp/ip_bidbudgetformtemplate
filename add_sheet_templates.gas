@@ -1,0 +1,43 @@
+function addChangeOrder() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var coSheet = spreadsheet.getSheetByName('Change Order').showSheet();
+  var ui = SpreadsheetApp.getUi();
+  var response = ui.prompt('Change Order Number','Enter Change Order Number', ui.ButtonSet.OK_CANCEL);
+  if (response.getSelectedButton() == ui.Button.OK) {
+  var coSheetCopy = coSheet.copyTo(spreadsheet);
+  var coNumIp = coSheetCopy.getRange('J2').setValue(response.getResponseText());
+    coSheetCopy.setName('Change Order ' + response.getResponseText());
+  }
+  var hideCoSheet = coSheet.hideSheet();
+}
+
+function addInteriorSheet() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var intSheet = spreadsheet.getSheetByName('InteriorTemplate');
+  var ui = SpreadsheetApp.getUi();
+  var response = ui.prompt('New Interior Sheet','Enter Name for Interior Sheet',ui.ButtonSet.OK_CANCEL);
+  if (response.getSelectedButton() == ui.Button.OK) {
+  var intSheetCopy = intSheet.copyTo(spreadsheet);
+  var intSheetNameValue = intSheetCopy.getRange('A4').setValue('Interior ' + response.getResponseText());
+    intSheetCopy.setName('Interior ' + response.getResponseText());
+  }
+}
+
+function addExteriorSheet() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var extSheet = spreadsheet.getSheetByName('ExteriorTemplate');
+  var ui = SpreadsheetApp.getUi();
+  var response = ui.prompt('New Exterior Sheet','Enter Name for Exterior Sheet',ui.ButtonSet.OK_CANCEL);
+  if (response.getSelectedButton() == ui.Button.OK) {
+  var extSheetCopy = extSheet.copyTo(spreadsheet);
+  var extSheetNameValue = extSheetCopy.getRange('A4').setValue('Exterior ' + response.getResponseText());
+    extSheetCopy.setName('Exterior ' + response.getResponseText());
+  }
+}
+
+
+function viewEstimateToContractorEdit() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var sheet = spreadsheet.getSheetByName('EstimateToContractor_Editable').showSheet();
+  var hideSheet = spreadsheet.getSheetByName('EstimateToContractor').hideSheet();
+}
