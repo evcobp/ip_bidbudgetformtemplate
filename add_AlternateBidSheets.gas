@@ -1,0 +1,709 @@
+function addAlternates() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var bidEntry = spreadsheet.getSheetByName('BidEntry');
+  var alternateutility = spreadsheet.getSheetByName('AlternateUtility');
+  var alternateNameUtility = spreadsheet.getSheetByName('AlternateNameUtility');
+  var hub = spreadsheet.getSheetByName('Hub');
+  var type = hub.getRange('A10').getValue();
+  var area = hub.getRange('B10').getValue();
+  var indicator = hub.getRange('C10').getValue();
+  var sheetRename = (type + ' ' + area + ' ' + indicator);
+  var alternateName = [[type] + ' ' + [area] + ' ' + [indicator]];
+  var scriptProperties = PropertiesService.getScriptProperties();
+  
+  switch (area) {
+    case "Interior":
+      var copyIntSheet = spreadsheet.getSheetByName('InteriorTemplate').copyTo(spreadsheet);
+      copyIntSheet.showSheet();
+      var newAlternateInteriorSheet = copyIntSheet.setName(sheetRename);
+      newAlternateInteriorSheet.getRange('A4').setValue(alternateName);
+      
+      
+      if (type === 'Alternate'){
+        var dataRange = alternateNameUtility.getDataRange();
+        var lastRow = dataRange.getLastRow();
+        var nextRow = lastRow + 1;
+        var alternateUtilityIntNameRange = alternateNameUtility.getRange('A2:A17');
+        var alternateNameCol = alternateUtilityIntNameRange.getColumn();
+        var alternateNameCell = alternateNameUtility.getRange(nextRow,alternateNameCol).setValue(alternateName);
+      
+        var alternateUtilityIntAmountRange = alternateNameUtility.getRange('B2:B17');
+        var alternateAmountCol = alternateUtilityIntAmountRange.getColumn();
+        var alternateAmountCell = alternateNameUtility.getRange(nextRow,alternateAmountCol);
+        var intFormulaInput = alternateAmountCell.setValue('=' + "'" + [alternateName] + "'" + '!O3');
+        
+      } else {
+        var dataRange = alternateNameUtility.getDataRange();
+        var lastRow = dataRange.getLastRow();
+        var nextRow = lastRow + 1;
+        var alternateUtilityIntNameRange = alternateNameUtility.getRange('A2:A17');
+        var alternateNameCol = alternateUtilityIntNameRange.getColumn();
+        var alternateNameCell = alternateNameUtility.getRange(nextRow,alternateNameCol).setValue(alternateName);
+        
+        var alternateUtilityVoluntaryIntAmountRange = alternateNameUtility.getRange('C2:C17');
+        var alternateVoluntaryAmountCol = alternateUtilityVoluntaryIntAmountRange.getColumn();
+        var alternateAmountCell = alternateNameUtility.getRange(nextRow,alternateVoluntaryAmountCol);
+        var intVoluntaryFormulaInput = alternateAmountCell.setValue('=' + "'" + [alternateName] + "'" + '!O3');
+      }
+      
+      
+      var alternateNameCopy = alternateNameUtility.getRange('A2:A17').copyValuesToRange(alternateutility,1,1,2,17);
+
+      var alternateDescriptionUtilityRange = alternateutility.getRange('A2:A17').copyValuesToRange(bidEntry,1,1,42,57);
+
+      
+      var copyAlternateForemanBreakdown = spreadsheet.getSheetByName('AlternateForemanBreakdown').copyTo(spreadsheet);
+      var newAlternateForemanBreakdown = copyAlternateForemanBreakdown.setName(type + 'ForemanBreakdown' + ' ' + sheetRename);
+      
+      
+      /*Interior Foreman Breakdown*/
+      var primer = newAlternateInteriorSheet.getRange('M7').getValue();
+      newAlternateForemanBreakdown.getRange('A6').setValue(primer);
+      
+      var gypWalls = newAlternateInteriorSheet.getRange('M8').getValue();
+      newAlternateForemanBreakdown.getRange('A7').setValue(gypWalls);
+      
+      var gypCeil = newAlternateInteriorSheet.getRange('M9').getValue();
+      newAlternateForemanBreakdown.getRange('A8').setValue(gypCeil);
+      
+      var cmuBlock = newAlternateInteriorSheet.getRange('M10').getValue();
+      newAlternateForemanBreakdown.getRange('A10').setValue(cmuBlock);
+      
+      var cmuFinish = newAlternateInteriorSheet.getRange('M10').getValue();
+      newAlternateForemanBreakdown.getRange('A11').setValue(cmuFinish);
+      
+      var deckingSmall = newAlternateInteriorSheet.getRange('M11').getValue();
+      newAlternateForemanBreakdown.getRange('A12').setValue(deckingSmall);
+      
+      var deckingNew = newAlternateInteriorSheet.getRange('M12').getValue();
+      newAlternateForemanBreakdown.getRange('A13').setValue(deckingNew);
+      
+      var deckingExisting = newAlternateInteriorSheet.getRange('M13').getValue();
+      newAlternateForemanBreakdown.getRange('A14').setValue(deckingExisting);
+      
+      var ceilingGridXl = newAlternateInteriorSheet.getRange('M14').getValue();
+      newAlternateForemanBreakdown.getRange('A15').setValue(ceilingGridXl);
+      
+      var ceilingGridSmall = newAlternateInteriorSheet.getRange('M15').getValue();
+      newAlternateForemanBreakdown.getRange('A16').setValue(ceilingGridSmall);
+      
+      var bulkheads = newAlternateInteriorSheet.getRange('M16').getValue();
+      newAlternateForemanBreakdown.getRange('A17').setValue(bulkheads);
+      
+      var primerBox = newAlternateInteriorSheet.getRange('M20').getValue();
+      newAlternateForemanBreakdown.getRange('A18').setValue(primerBox);
+      
+      var expoxyWalls = newAlternateInteriorSheet.getRange('M25').getValue();
+      newAlternateForemanBreakdown.getRange('A19').setValue(expoxyWalls);
+      
+      var epoxyWallsSolvent = newAlternateInteriorSheet.getRange('M26').getValue();
+      newAlternateForemanBreakdown.getRange('A20').setValue(epoxyWallsSolvent);
+      
+      var drywallIntown = newAlternateInteriorSheet.getRange('M27').getValue();
+      newAlternateForemanBreakdown.getRange('A21').setValue(drywallIntown);
+      
+      var drywallOuttown = newAlternateInteriorSheet.getRange('M28').getValue();
+      newAlternateForemanBreakdown.getRange('A22').setValue(drywallOuttown);
+      
+      var orangePeel = newAlternateInteriorSheet.getRange('M29').getValue();
+      newAlternateForemanBreakdown.getRange('A23').setValue(orangePeel);
+      
+      var precast = newAlternateInteriorSheet.getRange('M30').getValue();
+      newAlternateForemanBreakdown.getRange('A24').setValue(precast);
+      
+      var stainWoodCeilings = newAlternateInteriorSheet.getRange('M31').getValue();
+      newAlternateForemanBreakdown.getRange('A25').setValue(stainWoodCeilings);
+      
+      var caulking = newAlternateInteriorSheet.getRange('M32').getValue();
+      newAlternateForemanBreakdown.getRange('A26').setValue(caulking);
+      
+      var sealedConFloor = newAlternateInteriorSheet.getRange('M37').getValue();
+      newAlternateForemanBreakdown.getRange('A27').setValue(sealedConFloor);
+      
+      var stainConFloor = newAlternateInteriorSheet.getRange('M38').getValue();
+      newAlternateForemanBreakdown.getRange('A28').setValue(stainConFloor);
+      
+      var solventEpoxyFloor = newAlternateInteriorSheet.getRange('M39').getValue();
+      newAlternateForemanBreakdown.getRange('A29').setValue(solventEpoxyFloor);
+      
+      var floorStriping = newAlternateInteriorSheet.getRange('M40').getValue();
+      newAlternateForemanBreakdown.getRange('A30').setValue(floorStriping);
+      
+      var wainscotPainted = newAlternateInteriorSheet.getRange('M45').getValue();
+      newAlternateForemanBreakdown.getRange('A31').setValue(wainscotPainted);
+      
+      var wainscotStained = newAlternateInteriorSheet.getRange('M46').getValue();
+      newAlternateForemanBreakdown.getRange('A32').setValue(wainscotStained);
+      
+      var osbBoard = newAlternateInteriorSheet.getRange('M47').getValue();
+      newAlternateForemanBreakdown.getRange('A33').setValue(osbBoard);
+      
+      var metalDoorFrames = newAlternateInteriorSheet.getRange('M52').getValue();
+      newAlternateForemanBreakdown.getRange('A34').setValue(metalDoorFrames);
+      
+      var metalDoors = newAlternateInteriorSheet.getRange('M53').getValue();
+      newAlternateForemanBreakdown.getRange('A35').setValue(metalDoors);
+      
+      var epoxyDoors = newAlternateInteriorSheet.getRange('M54').getValue();
+      newAlternateForemanBreakdown.getRange('A36').setValue(epoxyDoors);
+      
+      var epoxyDoorFrames = newAlternateInteriorSheet.getRange('M55').getValue();
+      newAlternateForemanBreakdown.getRange('A37').setValue(epoxyDoorFrames);
+      
+      var stainedWoodDoorFrames = newAlternateInteriorSheet.getRange('M56').getValue();
+      newAlternateForemanBreakdown.getRange('A38').setValue(stainedWoodDoorFrames);
+      
+      var paintedWoodDoorFrames = newAlternateInteriorSheet.getRange('M57').getValue();
+      newAlternateForemanBreakdown.getRange('A39').setValue(paintedWoodDoorFrames);
+      
+      var stainedWoodDoors = newAlternateInteriorSheet.getRange('M58').getValue();
+      newAlternateForemanBreakdown.getRange('A40').setValue(stainedWoodDoors);
+      
+      var paintedWoodDoors = newAlternateInteriorSheet.getRange('M59').getValue();
+      newAlternateForemanBreakdown.getRange('A41').setValue(paintedWoodDoors);
+      
+      var stripWoodStainedDoors = newAlternateInteriorSheet.getRange('M60').getValue();
+      newAlternateForemanBreakdown.getRange('A42').setValue(stripWoodStainedDoors);
+      
+      var stainedWindowFrames = newAlternateInteriorSheet.getRange('M61').getValue();
+      newAlternateForemanBreakdown.getRange('A43').setValue(stainedWindowFrames);
+      
+      var paintedWindowsSills = newAlternateInteriorSheet.getRange('M62').getValue();
+      newAlternateForemanBreakdown.getRange('A44').setValue(paintedWindowsSills);
+      
+      var caulkingDoorFrames = newAlternateInteriorSheet.getRange('M63').getValue();
+      newAlternateForemanBreakdown.getRange('A45').setValue(caulkingDoorFrames);
+      
+      var woodBaseStainXl = newAlternateInteriorSheet.getRange('M68').getValue();
+      newAlternateForemanBreakdown.getRange('A46').setValue(woodBaseStainXl);
+      
+      var woodBaseStainSmall = newAlternateInteriorSheet.getRange('M69').getValue();
+      newAlternateForemanBreakdown.getRange('A47').setValue(woodBaseStainSmall);
+      
+      var woodBasePaint = newAlternateInteriorSheet.getRange('M70').getValue();
+      newAlternateForemanBreakdown.getRange('A48').setValue(woodBasePaint);
+      
+      var woodTrimPainted = newAlternateInteriorSheet.getRange('M71').getValue();
+      newAlternateForemanBreakdown.getRange('A49').setValue(woodTrimPainted);
+      
+      var woodTrimStained = newAlternateInteriorSheet.getRange('M72').getValue();
+      newAlternateForemanBreakdown.getRange('A50').setValue(woodTrimStained);
+      
+      var shoeMoldPainted = newAlternateInteriorSheet.getRange('M73').getValue();
+      newAlternateForemanBreakdown.getRange('A51').setValue(shoeMoldPainted);
+      
+      var shoeMoldStained = newAlternateInteriorSheet.getRange('M74').getValue();
+      newAlternateForemanBreakdown.getRange('A52').setValue(shoeMoldStained);
+      
+      var shelvingPainted = newAlternateInteriorSheet.getRange('M75').getValue();
+      newAlternateForemanBreakdown.getRange('A53').setValue(shelvingPainted);
+      
+      var shelvingStained = newAlternateInteriorSheet.getRange('M76').getValue();
+      newAlternateForemanBreakdown.getRange('A54').setValue(shelvingStained);
+      
+      var stairPans = newAlternateInteriorSheet.getRange('M81').getValue();
+      newAlternateForemanBreakdown.getRange('A55').setValue(stairPans);
+      
+      var stringers = newAlternateInteriorSheet.getRange('M82').getValue();
+      newAlternateForemanBreakdown.getRange('A56').setValue(stringers);
+      
+      var handrailEasy = newAlternateInteriorSheet.getRange('M83').getValue();
+      newAlternateForemanBreakdown.getRange('A57').setValue(handrailEasy);
+      
+      var handrailDetail = newAlternateInteriorSheet.getRange('M84').getValue();
+      newAlternateForemanBreakdown.getRange('A58').setValue(handrailDetail);
+      
+      var woodHandrailPaint = newAlternateInteriorSheet.getRange('M85').getValue();
+      newAlternateForemanBreakdown.getRange('A59').setValue(woodHandrailPaint);
+      
+      var woodHandrailStain = newAlternateInteriorSheet.getRange('M86').getValue();
+      newAlternateForemanBreakdown.getRange('A60').setValue(woodHandrailStain);
+      
+      var chairRailPaint = newAlternateInteriorSheet.getRange('M87').getValue();
+      newAlternateForemanBreakdown.getRange('A61').setValue(chairRailPaint);
+      
+      var chairRailStain = newAlternateInteriorSheet.getRange('M88').getValue();
+      newAlternateForemanBreakdown.getRange('A62').setValue(chairRailStain);
+      
+      var columnsNormal = newAlternateInteriorSheet.getRange('M93').getValue();
+      newAlternateForemanBreakdown.getRange('A63').setValue(columnsNormal);
+      
+      var columnsMedium = newAlternateInteriorSheet.getRange('M94').getValue();
+      newAlternateForemanBreakdown.getRange('A64').setValue(columnsMedium);
+      
+      var columnsLarge = newAlternateInteriorSheet.getRange('M95').getValue();
+      newAlternateForemanBreakdown.getRange('A65').setValue(columnsLarge);
+      
+      var interiorPipeBollards = newAlternateInteriorSheet.getRange('M96').getValue();
+      newAlternateForemanBreakdown.getRange('A66').setValue(interiorPipeBollards);
+      
+      
+      /*Exterior Foreman Breakdown*/
+      var smoothCMU = newAlternateInteriorSheet.getRange('L7').getValue();
+      newAlternateForemanBreakdown.getRange('I6').setValue(smoothCMU);
+      
+      var splitFace = newAlternateInteriorSheet.getRange('L8').getValue();
+      newAlternateForemanBreakdown.getRange('I7').setValue(splitFace);
+      
+      var precastWalls = newAlternateInteriorSheet.getRange('L9').getValue();
+      newAlternateForemanBreakdown.getRange('I8').setValue(precastWalls);
+      
+      var fiberCement = newAlternateInteriorSheet.getRange('L10').getValue();
+      newAlternateForemanBreakdown.getRange('I9').setValue(fiberCement);
+      
+      var exteriorFacade = newAlternateInteriorSheet.getRange('L11').getValue();
+      newAlternateForemanBreakdown.getRange('I10').setValue(exteriorFacade);
+      
+      var soffit = newAlternateInteriorSheet.getRange('L12').getValue();
+      newAlternateForemanBreakdown.getRange('I11').setValue(soffit);
+      
+      var flutedWall = newAlternateInteriorSheet.getRange('L13').getValue();
+      newAlternateForemanBreakdown.getRange('I12').setValue(flutedWall);
+      
+      var stucco = newAlternateInteriorSheet.getRange('L14').getValue();
+      newAlternateForemanBreakdown.getRange('I13').setValue(stucco);
+      
+      var facia = newAlternateInteriorSheet.getRange('L15').getValue();
+      newAlternateForemanBreakdown.getRange('I14').setValue(facia);
+      
+      var extMetalDoorFrames = newAlternateInteriorSheet.getRange('L19').getValue();
+      newAlternateForemanBreakdown.getRange('I14').setValue(extMetalDoorFrames);
+      
+      var extMetalDoors = newAlternateInteriorSheet.getRange('L20').getValue();
+      newAlternateForemanBreakdown.getRange('I15').setValue(extMetalDoors);
+      
+      var overheadDoors = newAlternateInteriorSheet.getRange('L21').getValue();
+      newAlternateForemanBreakdown.getRange('I16').setValue(overheadDoors);
+      
+      var windows = newAlternateInteriorSheet.getRange('L22').getValue();
+      newAlternateForemanBreakdown.getRange('I17').setValue(windows);
+      
+      var extStairpans = newAlternateInteriorSheet.getRange('L27').getValue();
+      newAlternateForemanBreakdown.getRange('I18').setValue(extStairpans);
+      
+      var extStringers = newAlternateInteriorSheet.getRange('L28').getValue();
+      newAlternateForemanBreakdown.getRange('I19').setValue(extStringers);
+      
+      var extHandrailEasy = newAlternateInteriorSheet.getRange('L29').getValue();
+      newAlternateForemanBreakdown.getRange('I20').setValue(extHandrailEasy);
+      
+      var extHandrailDetailed = newAlternateInteriorSheet.getRange('L30').getValue();
+      newAlternateForemanBreakdown.getRange('I21').setValue(extHandrailDetailed);
+      
+      var extBollards = newAlternateInteriorSheet.getRange('L35').getValue();
+      newAlternateForemanBreakdown.getRange('I22').setValue(extBollards);
+      
+      var extGutters = newAlternateInteriorSheet.getRange('L40').getValue();
+      newAlternateForemanBreakdown.getRange('I23').setValue(extGutters);
+      
+      var downspouts = newAlternateInteriorSheet.getRange('L41').getValue();
+      newAlternateForemanBreakdown.getRange('I24').setValue(downspouts);
+      
+      var extScuppers = newAlternateInteriorSheet.getRange('L42').getValue();
+      newAlternateForemanBreakdown.getRange('I25').setValue(extScuppers);
+      
+      var powerwashEasy = newAlternateInteriorSheet.getRange('L47').getValue();
+      newAlternateForemanBreakdown.getRange('I26').setValue(powerwashEasy);
+      
+      var powerwashMedium = newAlternateInteriorSheet.getRange('L48').getValue();
+      newAlternateForemanBreakdown.getRange('I27').setValue(powerwashMedium);
+      
+      var powerwashHard = newAlternateInteriorSheet.getRange('L49').getValue();
+      newAlternateForemanBreakdown.getRange('I28').setValue(powerwashHard);
+      
+      var steelCanopy = newAlternateInteriorSheet.getRange('L54').getValue();
+      newAlternateForemanBreakdown.getRange('I29').setValue(steelCanopy);
+      
+      var lintels = newAlternateInteriorSheet.getRange('L55').getValue();
+      newAlternateForemanBreakdown.getRange('I30').setValue(lintels);
+      
+      var dockplates = newAlternateInteriorSheet.getRange('L56').getValue();
+      newAlternateForemanBreakdown.getRange('I31').setValue(dockplates);
+      
+      var dumpsterEnclosure = newAlternateInteriorSheet.getRange('L57').getValue();
+      newAlternateForemanBreakdown.getRange('I32').setValue(dumpsterEnclosure);
+      
+      var dumpsterGate = newAlternateInteriorSheet.getRange('L58').getValue();
+      newAlternateForemanBreakdown.getRange('I33').setValue(dumpsterGate);
+      
+      var lightPoles = newAlternateInteriorSheet.getRange('L59').getValue();
+      newAlternateForemanBreakdown.getRange('I34').setValue(lightPoles);
+      
+      var roofLadder = newAlternateInteriorSheet.getRange('L60').getValue();
+      newAlternateForemanBreakdown.getRange('I35').setValue(roofLadder);
+      
+      var entryPost = newAlternateInteriorSheet.getRange('L61').getValue();
+      newAlternateForemanBreakdown.getRange('I36').setValue(entryPost);
+      
+      var copingCap = newAlternateInteriorSheet.getRange('L62').getValue();
+      newAlternateForemanBreakdown.getRange('I37').setValue(copingCap);
+      
+      var guardrail = newAlternateInteriorSheet.getRange('L63').getValue();
+      newAlternateForemanBreakdown.getRange('I38').setValue(guardrail);
+      
+      copyAlternateForemanBreakdown.hideSheet();
+      
+      var clear = hub.getRange('A10:C10').clearContent();
+      
+      break;
+      
+    case "Exterior":
+      var copyExtSheet = spreadsheet.getSheetByName('ExteriorTemplate').copyTo(spreadsheet);
+      copyExtSheet.showSheet();
+      var newAlternateExteriorSheet = copyExtSheet.setName(sheetRename);
+      newAlternateExteriorSheet.getRange('A4').setValue(alternateName);
+      
+      if (type === 'Alternate'){
+      var dataRange = alternateNameUtility.getDataRange();
+      var lastRow = dataRange.getLastRow();
+      var nextRow = lastRow + 1;
+      var alternateUtilityIntNameRange = alternateNameUtility.getRange('A2:A17');
+      var alternateNameCol = alternateUtilityIntNameRange.getColumn();
+      var alternateNameCell = alternateNameUtility.getRange(nextRow,alternateNameCol).setValue(alternateName);
+      
+      var alternateUtilityIntAmountRange = alternateNameUtility.getRange('B2:B17');
+      var alternateAmountCol = alternateUtilityIntAmountRange.getColumn();
+      var alternateAmountCell = alternateNameUtility.getRange(nextRow,alternateAmountCol);
+      var intFormulaInput = alternateAmountCell.setValue('=' + "'" + [alternateName] + "'" + '!N3');
+        
+      } else {
+        
+        var dataRange = alternateNameUtility.getDataRange();
+        var lastRow = dataRange.getLastRow();
+        var nextRow = lastRow + 1;
+        var alternateUtilityIntNameRange = alternateNameUtility.getRange('A2:A17');
+        var alternateNameCol = alternateUtilityIntNameRange.getColumn();
+        var alternateNameCell = alternateNameUtility.getRange(nextRow,alternateNameCol).setValue(alternateName); 
+        
+        var alternateUtilityVoluntaryIntAmountRange = alternateNameUtility.getRange('C2:C17');
+        var alternateVoluntaryAmountCol = alternateUtilityVoluntaryIntAmountRange.getColumn();
+        var alternateAmountCell = alternateNameUtility.getRange(nextRow,alternateVoluntaryAmountCol);
+        var intVoluntaryFormulaInput = alternateAmountCell.setValue('=' + "'" + [alternateName] + "'" + '!N3');
+      }
+      
+      var alternateNameCopy = alternateNameUtility.getRange('A2:A17').copyValuesToRange(alternateutility,1,1,2,17);
+
+                                                                  
+      var alternateDescriptionUtilityRange = alternateutility.getRange('A2:A17').copyValuesToRange(bidEntry,1,1,42,57);
+
+
+      var copyAlternateForemanBreakdown = spreadsheet.getSheetByName('AlternateForemanBreakdown').copyTo(spreadsheet);
+      var newAlternateForemanBreakdown = copyAlternateForemanBreakdown.setName(type + 'ForemanBreakdown' + ' ' + sheetRename);
+      
+      /*Interior Foreman Breakdown*/
+      var primer = newAlternateInteriorSheet.getRange('M7').getValue();
+      newAlternateForemanBreakdown.getRange('A6').setValue(primer);
+      
+      var gypWalls = newAlternateInteriorSheet.getRange('M8').getValue();
+      newAlternateForemanBreakdown.getRange('A7').setValue(gypWalls);
+      
+      var gypCeil = newAlternateInteriorSheet.getRange('M9').getValue();
+      newAlternateForemanBreakdown.getRange('A8').setValue(gypCeil);
+      
+      var cmuBlock = newAlternateInteriorSheet.getRange('M10').getValue();
+      newAlternateForemanBreakdown.getRange('A10').setValue(cmuBlock);
+      
+      var cmuFinish = newAlternateInteriorSheet.getRange('M10').getValue();
+      newAlternateForemanBreakdown.getRange('A11').setValue(cmuFinish);
+      
+      var deckingSmall = newAlternateInteriorSheet.getRange('M11').getValue();
+      newAlternateForemanBreakdown.getRange('A12').setValue(deckingSmall);
+      
+      var deckingNew = newAlternateInteriorSheet.getRange('M12').getValue();
+      newAlternateForemanBreakdown.getRange('A13').setValue(deckingNew);
+      
+      var deckingExisting = newAlternateInteriorSheet.getRange('M13').getValue();
+      newAlternateForemanBreakdown.getRange('A14').setValue(deckingExisting);
+      
+      var ceilingGridXl = newAlternateInteriorSheet.getRange('M14').getValue();
+      newAlternateForemanBreakdown.getRange('A15').setValue(ceilingGridXl);
+      
+      var ceilingGridSmall = newAlternateInteriorSheet.getRange('M15').getValue();
+      newAlternateForemanBreakdown.getRange('A16').setValue(ceilingGridSmall);
+      
+      var bulkheads = newAlternateInteriorSheet.getRange('M16').getValue();
+      newAlternateForemanBreakdown.getRange('A17').setValue(bulkheads);
+      
+      var primerBox = newAlternateInteriorSheet.getRange('M20').getValue();
+      newAlternateForemanBreakdown.getRange('A18').setValue(primerBox);
+      
+      var expoxyWalls = newAlternateInteriorSheet.getRange('M25').getValue();
+      newAlternateForemanBreakdown.getRange('A19').setValue(expoxyWalls);
+      
+      var epoxyWallsSolvent = newAlternateInteriorSheet.getRange('M26').getValue();
+      newAlternateForemanBreakdown.getRange('A20').setValue(epoxyWallsSolvent);
+      
+      var drywallIntown = newAlternateInteriorSheet.getRange('M27').getValue();
+      newAlternateForemanBreakdown.getRange('A21').setValue(drywallIntown);
+      
+      var drywallOuttown = newAlternateInteriorSheet.getRange('M28').getValue();
+      newAlternateForemanBreakdown.getRange('A22').setValue(drywallOuttown);
+      
+      var orangePeel = newAlternateInteriorSheet.getRange('M29').getValue();
+      newAlternateForemanBreakdown.getRange('A23').setValue(orangePeel);
+      
+      var precast = newAlternateInteriorSheet.getRange('M30').getValue();
+      newAlternateForemanBreakdown.getRange('A24').setValue(precast);
+      
+      var stainWoodCeilings = newAlternateInteriorSheet.getRange('M31').getValue();
+      newAlternateForemanBreakdown.getRange('A25').setValue(stainWoodCeilings);
+      
+      var caulking = newAlternateInteriorSheet.getRange('M32').getValue();
+      newAlternateForemanBreakdown.getRange('A26').setValue(caulking);
+      
+      var sealedConFloor = newAlternateInteriorSheet.getRange('M37').getValue();
+      newAlternateForemanBreakdown.getRange('A27').setValue(sealedConFloor);
+      
+      var stainConFloor = newAlternateInteriorSheet.getRange('M38').getValue();
+      newAlternateForemanBreakdown.getRange('A28').setValue(stainConFloor);
+      
+      var solventEpoxyFloor = newAlternateInteriorSheet.getRange('M39').getValue();
+      newAlternateForemanBreakdown.getRange('A29').setValue(solventEpoxyFloor);
+      
+      var floorStriping = newAlternateInteriorSheet.getRange('M40').getValue();
+      newAlternateForemanBreakdown.getRange('A30').setValue(floorStriping);
+      
+      var wainscotPainted = newAlternateInteriorSheet.getRange('M45').getValue();
+      newAlternateForemanBreakdown.getRange('A31').setValue(wainscotPainted);
+      
+      var wainscotStained = newAlternateInteriorSheet.getRange('M46').getValue();
+      newAlternateForemanBreakdown.getRange('A32').setValue(wainscotStained);
+      
+      var osbBoard = newAlternateInteriorSheet.getRange('M47').getValue();
+      newAlternateForemanBreakdown.getRange('A33').setValue(osbBoard);
+      
+      var metalDoorFrames = newAlternateInteriorSheet.getRange('M52').getValue();
+      newAlternateForemanBreakdown.getRange('A34').setValue(metalDoorFrames);
+      
+      var metalDoors = newAlternateInteriorSheet.getRange('M53').getValue();
+      newAlternateForemanBreakdown.getRange('A35').setValue(metalDoors);
+      
+      var epoxyDoors = newAlternateInteriorSheet.getRange('M54').getValue();
+      newAlternateForemanBreakdown.getRange('A36').setValue(epoxyDoors);
+      
+      var epoxyDoorFrames = newAlternateInteriorSheet.getRange('M55').getValue();
+      newAlternateForemanBreakdown.getRange('A37').setValue(epoxyDoorFrames);
+      
+      var stainedWoodDoorFrames = newAlternateInteriorSheet.getRange('M56').getValue();
+      newAlternateForemanBreakdown.getRange('A38').setValue(stainedWoodDoorFrames);
+      
+      var paintedWoodDoorFrames = newAlternateInteriorSheet.getRange('M57').getValue();
+      newAlternateForemanBreakdown.getRange('A39').setValue(paintedWoodDoorFrames);
+      
+      var stainedWoodDoors = newAlternateInteriorSheet.getRange('M58').getValue();
+      newAlternateForemanBreakdown.getRange('A40').setValue(stainedWoodDoors);
+      
+      var paintedWoodDoors = newAlternateInteriorSheet.getRange('M59').getValue();
+      newAlternateForemanBreakdown.getRange('A41').setValue(paintedWoodDoors);
+      
+      var stripWoodStainedDoors = newAlternateInteriorSheet.getRange('M60').getValue();
+      newAlternateForemanBreakdown.getRange('A42').setValue(stripWoodStainedDoors);
+      
+      var stainedWindowFrames = newAlternateInteriorSheet.getRange('M61').getValue();
+      newAlternateForemanBreakdown.getRange('A43').setValue(stainedWindowFrames);
+      
+      var paintedWindowsSills = newAlternateInteriorSheet.getRange('M62').getValue();
+      newAlternateForemanBreakdown.getRange('A44').setValue(paintedWindowsSills);
+      
+      var caulkingDoorFrames = newAlternateInteriorSheet.getRange('M63').getValue();
+      newAlternateForemanBreakdown.getRange('A45').setValue(caulkingDoorFrames);
+      
+      var woodBaseStainXl = newAlternateInteriorSheet.getRange('M68').getValue();
+      newAlternateForemanBreakdown.getRange('A46').setValue(woodBaseStainXl);
+      
+      var woodBaseStainSmall = newAlternateInteriorSheet.getRange('M69').getValue();
+      newAlternateForemanBreakdown.getRange('A47').setValue(woodBaseStainSmall);
+      
+      var woodBasePaint = newAlternateInteriorSheet.getRange('M70').getValue();
+      newAlternateForemanBreakdown.getRange('A48').setValue(woodBasePaint);
+      
+      var woodTrimPainted = newAlternateInteriorSheet.getRange('M71').getValue();
+      newAlternateForemanBreakdown.getRange('A49').setValue(woodTrimPainted);
+      
+      var woodTrimStained = newAlternateInteriorSheet.getRange('M72').getValue();
+      newAlternateForemanBreakdown.getRange('A50').setValue(woodTrimStained);
+      
+      var shoeMoldPainted = newAlternateInteriorSheet.getRange('M73').getValue();
+      newAlternateForemanBreakdown.getRange('A51').setValue(shoeMoldPainted);
+      
+      var shoeMoldStained = newAlternateInteriorSheet.getRange('M74').getValue();
+      newAlternateForemanBreakdown.getRange('A52').setValue(shoeMoldStained);
+      
+      var shelvingPainted = newAlternateInteriorSheet.getRange('M75').getValue();
+      newAlternateForemanBreakdown.getRange('A53').setValue(shelvingPainted);
+      
+      var shelvingStained = newAlternateInteriorSheet.getRange('M76').getValue();
+      newAlternateForemanBreakdown.getRange('A54').setValue(shelvingStained);
+      
+      var stairPans = newAlternateInteriorSheet.getRange('M81').getValue();
+      newAlternateForemanBreakdown.getRange('A55').setValue(stairPans);
+      
+      var stringers = newAlternateInteriorSheet.getRange('M82').getValue();
+      newAlternateForemanBreakdown.getRange('A56').setValue(stringers);
+      
+      var handrailEasy = newAlternateInteriorSheet.getRange('M83').getValue();
+      newAlternateForemanBreakdown.getRange('A57').setValue(handrailEasy);
+      
+      var handrailDetail = newAlternateInteriorSheet.getRange('M84').getValue();
+      newAlternateForemanBreakdown.getRange('A58').setValue(handrailDetail);
+      
+      var woodHandrailPaint = newAlternateInteriorSheet.getRange('M85').getValue();
+      newAlternateForemanBreakdown.getRange('A59').setValue(woodHandrailPaint);
+      
+      var woodHandrailStain = newAlternateInteriorSheet.getRange('M86').getValue();
+      newAlternateForemanBreakdown.getRange('A60').setValue(woodHandrailStain);
+      
+      var chairRailPaint = newAlternateInteriorSheet.getRange('M87').getValue();
+      newAlternateForemanBreakdown.getRange('A61').setValue(chairRailPaint);
+      
+      var chairRailStain = newAlternateInteriorSheet.getRange('M88').getValue();
+      newAlternateForemanBreakdown.getRange('A62').setValue(chairRailStain);
+      
+      var columnsNormal = newAlternateInteriorSheet.getRange('M93').getValue();
+      newAlternateForemanBreakdown.getRange('A63').setValue(columnsNormal);
+      
+      var columnsMedium = newAlternateInteriorSheet.getRange('M94').getValue();
+      newAlternateForemanBreakdown.getRange('A64').setValue(columnsMedium);
+      
+      var columnsLarge = newAlternateInteriorSheet.getRange('M95').getValue();
+      newAlternateForemanBreakdown.getRange('A65').setValue(columnsLarge);
+      
+      var interiorPipeBollards = newAlternateInteriorSheet.getRange('M96').getValue();
+      newAlternateForemanBreakdown.getRange('A66').setValue(interiorPipeBollards);
+      
+      
+      /*Exterior Foreman Breakdown*/
+      var smoothCMU = newAlternateInteriorSheet.getRange('L7').getValue();
+      newAlternateForemanBreakdown.getRange('I6').setValue(smoothCMU);
+      
+      var splitFace = newAlternateInteriorSheet.getRange('L8').getValue();
+      newAlternateForemanBreakdown.getRange('I7').setValue(splitFace);
+      
+      var precastWalls = newAlternateInteriorSheet.getRange('L9').getValue();
+      newAlternateForemanBreakdown.getRange('I8').setValue(precastWalls);
+      
+      var fiberCement = newAlternateInteriorSheet.getRange('L10').getValue();
+      newAlternateForemanBreakdown.getRange('I9').setValue(fiberCement);
+      
+      var exteriorFacade = newAlternateInteriorSheet.getRange('L11').getValue();
+      newAlternateForemanBreakdown.getRange('I10').setValue(exteriorFacade);
+      
+      var soffit = newAlternateInteriorSheet.getRange('L12').getValue();
+      newAlternateForemanBreakdown.getRange('I11').setValue(soffit);
+      
+      var flutedWall = newAlternateInteriorSheet.getRange('L13').getValue();
+      newAlternateForemanBreakdown.getRange('I12').setValue(flutedWall);
+      
+      var stucco = newAlternateInteriorSheet.getRange('L14').getValue();
+      newAlternateForemanBreakdown.getRange('I13').setValue(stucco);
+      
+      var facia = newAlternateInteriorSheet.getRange('L15').getValue();
+      newAlternateForemanBreakdown.getRange('I14').setValue(facia);
+      
+      var extMetalDoorFrames = newAlternateInteriorSheet.getRange('L19').getValue();
+      newAlternateForemanBreakdown.getRange('I14').setValue(extMetalDoorFrames);
+      
+      var extMetalDoors = newAlternateInteriorSheet.getRange('L20').getValue();
+      newAlternateForemanBreakdown.getRange('I15').setValue(extMetalDoors);
+      
+      var overheadDoors = newAlternateInteriorSheet.getRange('L21').getValue();
+      newAlternateForemanBreakdown.getRange('I16').setValue(overheadDoors);
+      
+      var windows = newAlternateInteriorSheet.getRange('L22').getValue();
+      newAlternateForemanBreakdown.getRange('I17').setValue(windows);
+      
+      var extStairpans = newAlternateInteriorSheet.getRange('L27').getValue();
+      newAlternateForemanBreakdown.getRange('I18').setValue(extStairpans);
+      
+      var extStringers = newAlternateInteriorSheet.getRange('L28').getValue();
+      newAlternateForemanBreakdown.getRange('I19').setValue(extStringers);
+      
+      var extHandrailEasy = newAlternateInteriorSheet.getRange('L29').getValue();
+      newAlternateForemanBreakdown.getRange('I20').setValue(extHandrailEasy);
+      
+      var extHandrailDetailed = newAlternateInteriorSheet.getRange('L30').getValue();
+      newAlternateForemanBreakdown.getRange('I21').setValue(extHandrailDetailed);
+      
+      var extBollards = newAlternateInteriorSheet.getRange('L35').getValue();
+      newAlternateForemanBreakdown.getRange('I22').setValue(extBollards);
+      
+      var extGutters = newAlternateInteriorSheet.getRange('L40').getValue();
+      newAlternateForemanBreakdown.getRange('I23').setValue(extGutters);
+      
+      var downspouts = newAlternateInteriorSheet.getRange('L41').getValue();
+      newAlternateForemanBreakdown.getRange('I24').setValue(downspouts);
+      
+      var extScuppers = newAlternateInteriorSheet.getRange('L42').getValue();
+      newAlternateForemanBreakdown.getRange('I25').setValue(extScuppers);
+      
+      var powerwashEasy = newAlternateInteriorSheet.getRange('L47').getValue();
+      newAlternateForemanBreakdown.getRange('I26').setValue(powerwashEasy);
+      
+      var powerwashMedium = newAlternateInteriorSheet.getRange('L48').getValue();
+      newAlternateForemanBreakdown.getRange('I27').setValue(powerwashMedium);
+      
+      var powerwashHard = newAlternateInteriorSheet.getRange('L49').getValue();
+      newAlternateForemanBreakdown.getRange('I28').setValue(powerwashHard);
+      
+      var steelCanopy = newAlternateInteriorSheet.getRange('L54').getValue();
+      newAlternateForemanBreakdown.getRange('I29').setValue(steelCanopy);
+      
+      var lintels = newAlternateInteriorSheet.getRange('L55').getValue();
+      newAlternateForemanBreakdown.getRange('I30').setValue(lintels);
+      
+      var dockplates = newAlternateInteriorSheet.getRange('L56').getValue();
+      newAlternateForemanBreakdown.getRange('I31').setValue(dockplates);
+      
+      var dumpsterEnclosure = newAlternateInteriorSheet.getRange('L57').getValue();
+      newAlternateForemanBreakdown.getRange('I32').setValue(dumpsterEnclosure);
+      
+      var dumpsterGate = newAlternateInteriorSheet.getRange('L58').getValue();
+      newAlternateForemanBreakdown.getRange('I33').setValue(dumpsterGate);
+      
+      var lightPoles = newAlternateInteriorSheet.getRange('L59').getValue();
+      newAlternateForemanBreakdown.getRange('I34').setValue(lightPoles);
+      
+      var roofLadder = newAlternateInteriorSheet.getRange('L60').getValue();
+      newAlternateForemanBreakdown.getRange('I35').setValue(roofLadder);
+      
+      var entryPost = newAlternateInteriorSheet.getRange('L61').getValue();
+      newAlternateForemanBreakdown.getRange('I36').setValue(entryPost);
+      
+      var copingCap = newAlternateInteriorSheet.getRange('L62').getValue();
+      newAlternateForemanBreakdown.getRange('I37').setValue(copingCap);
+      
+      var guardrail = newAlternateInteriorSheet.getRange('L63').getValue();
+      newAlternateForemanBreakdown.getRange('I38').setValue(guardrail);
+      
+      newAlternateForemanBreakdown.hideSheet();
+      
+      
+      var clear = hub.getRange('A10:C10').clearContent();
+      
+      break;
+      
+    case "Allowance":
+      var ui = SpreadsheetApp.getUi();
+      var response = ui.prompt('Enter Allowance Description', ui.ButtonSet.OK_CANCEL);
+      if (response.getSelectedButton() == ui.Button.OK) {
+        var allowanceDescription = response.getResponseText();
+        
+        scriptProperties.setProperty('allType', allowanceDescription);
+        var description = scriptProperties.getProperty('allType');
+      }
+    
+      var ui = SpreadsheetApp.getUi();
+      var nextResponse = ui.prompt('Enter Allowance Amount', ui.ButtonSet.OK_CANCEL);
+        if (nextResponse.getSelectedButton() == ui.Button.OK) {
+        var allowanceAmount = nextResponse.getResponseText();
+        
+        scriptProperties.setProperty('allAmo', allowanceAmount);
+        var amount = scriptProperties.getProperty('allAmo');
+        
+        var allowance = ['Allowance ' + [description] + ' ',amount];
+        alternateutility.appendRow(allowance);
+          
+        var clear = hub.getRange('A10:C10').clearContent();
+        }
+  }
+  }
