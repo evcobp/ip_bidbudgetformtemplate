@@ -1,0 +1,19 @@
+function sendNotification() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getActiveSheet();
+  var range = sheet.getRange("A1:F20");
+  if(sheet.getName()=='BidEntry'){
+    var cell = ss.getActiveCell();
+    var cellCol = cell.getColumn();
+    if(cellCol == 5)
+    {
+    var cellRange = range.getCell(10,2).getValue().toString();
+      Logger.log(cell.getValue());
+    var taskValue = range.getCell(2,5).getValue().toString();
+      Logger.log(cell.getValue());
+    var recipients = "admin@inline-painting.com";
+    var subject = 'Job Task Status Changed for '+cellRange;
+    var body = 'The Job Task Status for ' +cellRange+' has been updated to '+taskValue+ '.'+ ' Please coordinate next steps.';
+    MailApp.sendEmail(recipients, subject, body);}
+    }
+}
