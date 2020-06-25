@@ -1,0 +1,9 @@
+function readRange() {
+  /*var response = Sheets.Spreadsheets.Values.get('1T6hBbe7-E3r_5QwxwfHBICIQSgrm6Ivq-PJiwdlQyts','Validation!D2:D8');
+  var array = response.getValues();
+  
+  var cell = SpreadsheetApp.getActive().getRange('B2');
+  var rule = SpreadsheetApp.newDataValidation().requireValueInList(array).build();
+  cell.setDataValidation(rule);*/
+}
+ 
