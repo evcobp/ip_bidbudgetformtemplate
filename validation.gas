@@ -1,0 +1,91 @@
+let urlString = '=IMPORTRANGE' + '(' + '"https://docs.google.com/spreadsheets/d/1jWASM-zIo_gUe2Q2kd4_PAaX0BsdEteCtKvrr_tDTII/edit?usp=sharing"' + ',' + '"Validation!"' + ')';
+
+function myFunction() {
+  var ss = SpreadsheetApp.getActive();
+  var ssSheet = ss.getSheetByName('Validation');
+  var spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1jWASM-zIo_gUe2Q2kd4_PAaX0BsdEteCtKvrr_tDTII/edit?usp=sharing');
+  var sheet = spreadsheet.getSheetByName('Validation');
+  
+  /* Answers */
+  var answers = urlString.replace(/Validation!/, "$&A1:A");
+  ssSheet.getRange('A1').setValue(answers);
+  
+  /* Numbers */
+  var numberRange = urlString.replace(/Validation!/, "$&B1:B");
+  ssSheet.getRange('B1').setValue(numberRange);
+    
+  /* Company */
+  var company = urlString.replace(/Validation!/, "$&C1:C");
+  ssSheet.getRange('C1').setValue(company);
+  
+  /* Estimators */
+  var estimators = urlString.replace(/Validation!/, "$&D1:D");
+  ssSheet.getRange('D1').setValue(estimators);
+  
+  /* Estimator email */
+  var estimatorEmails = urlString.replace(/Validation!/, "$&E1:E");
+  ssSheet.getRange('E1').setValue(estimatorEmails);
+  
+  /* Field Manager */
+  var fieldManager = urlString.replace(/Validation!/, "$&F1:F");
+  ssSheet.getRange('F1').setValue(fieldManager);
+  
+  /* Field Manager email */
+  var fieldManagerEmail = urlString.replace(/Validation!/, "$&G1:G");
+  ssSheet.getRange('G1').setValue(fieldManagerEmail);
+  
+  /* Exclusions */
+  var exclusions = urlString.replace(/Validation!/, "$&H1:H");
+  ssSheet.getRange('H1').setValue(exclusions);
+  
+  /* Subcontractors */
+  var subcontractors = urlString.replace(/Validation!/, "$&I1:I");
+  ssSheet.getRange('I1').setValue(subcontractors);
+  
+  /* Change Order Tracking */
+  var changeOrderTracking = urlString.replace(/Validation!/, "$&J1:J");
+  ssSheet.getRange('J1').setValue(subcontractors);
+  
+  /* Estimate Options */
+  var estimateOptions = urlString.replace(/Validation!/, "$&K1:K");
+  ssSheet.getRange('K1').setValue(estimateOptions);
+  
+  /* Job Status */
+  var jobStatus = urlString.replace(/Validation!/, "$&L1:L");
+  ssSheet.getRange('L1').setValue(jobStatus);
+  
+  /* Job Type */
+  var jobType = urlString.replace(/Validation!/, "$&M1:M");
+  ssSheet.getRange('M1').setValue(jobType);
+  
+  /* Bid Source */
+  var bidSource = urlString.replace(/Validation!/, "$&N1:N");
+  ssSheet.getRange('N1').setValue(bidSource);
+  
+  /* Job Tasks */
+  var jobTasks = urlString.replace(/Validation!/, "$&O1:O");
+  ssSheet.getRange('O1').setValue(jobTasks);
+  
+  /* Travel City */
+  var travelCity = urlString.replace(/Validation!/, "$&P1:P");
+  ssSheet.getRange('P1').setValue(travelCity);
+  
+  /* Per Trip */
+  var perTrip = urlString.replace(/Validation!/, "$&Q1:Q");
+  ssSheet.getRange('Q1').setValue(perTrip);
+  
+  /* Paint Supplier */
+  var paint = urlString.replace(/Validation!/, "$&R1:R");
+  ssSheet.getRange('R1').setValue(paint);
+  
+  /* Area */
+  var area = urlString.replace(/Validation!/, "$&S1:S");
+  ssSheet.getRange('S1').setValue(area);
+  
+  /* Travel Type */
+  var travelType = urlString.replace(/Validation!/, "$&T1:T");
+  ssSheet.getRange('T1').setValue(travelType);
+  
+    
+}
+  
