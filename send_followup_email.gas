@@ -1,0 +1,31 @@
+function addBidContact() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var hub = spreadsheet.getSheetByName('Hub');
+  var validationSheet = spreadsheet.getSheetByName('Validation');
+  var bidContact = hub.getRange('H13').getValue();
+  var bidContactEmail = hub.getRange('I13').getValue();
+  var bidContactLog = validationSheet.getRange('AD2:AD').getDataRegion()
+}
+
+function sendEmail() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var hub = spreadsheet.getSheetByName('Hub');
+  var validationSheet = spreadsheet.getSheetByName('Validation');
+  var bidContact = hub.getRange('H13').getValue();
+  var bidContactEmail = hub.getRange('I13').getValue();
+  var subject = hub.getRange('J13').getValue();
+  var body = hub.getRange('K13:M13').getValue();
+  var email = MailApp.sendEmail(bidContactEmail, subject, body);
+  
+  var bidContactLog = validationSheet.getRange('AD2').setValue(bidContact);
+  var bidContactEmailLog = validationSheet.getRange('AE2').setValue(bidContactEmail);
+  var subjectLog = validationSheet.getRange('AG2').setValue(subject);
+  var bodyLog = validationSheet.getRange('AH2').setValue(body);
+  
+  var emailRange = hub.getRange('H13:M13').clearContent();
+}
+
+function viewChartLog() {
+  var spreadsheet = SpreadsheetApp.getActive();
+  var chart = spreadsheet.getSheetByName('CommLogChart').showSheet().activate();
+}
