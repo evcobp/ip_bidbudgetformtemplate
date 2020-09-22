@@ -1,0 +1,20 @@
+function getJobNumberFromFileName() {
+  var file = DriveApp.getFileById('1t8owWV8ZC1BtFEkxysTz0Vm4s3Z4NU96-MsLA2Tr_AI');
+  var fileName = file.getName();
+  
+  var strPos = fileName.search('#');
+  if (strPos === 0) {
+  
+    var jobNumber = fileName.slice(1,5);
+    var spreadsheet = SpreadsheetApp.getActive();
+    var sheet = spreadsheet.getSheetByName('BidEntry');
+    var range = sheet.getRange('B4');
+    range.setValue(jobNumber);
+  } else {
+    var spreadsheet = SpreadsheetApp.getActive();
+    var sheet = spreadsheet.getSheetByName('BidEntry');
+    var range = sheet.getRange('B4');
+    range.setValue("Not Contracted");
+  
+  }
+}
